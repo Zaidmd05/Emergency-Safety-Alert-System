@@ -1,0 +1,366 @@
+
+
+  /* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #CC0000; /* Main Red */
+    --dark-color: #000000;    /* Main Black */
+    --light-color: #FFFFFF;   /* Main White */
+    --grey-text: #cccccc;
+    --dark-grey: #1a1a1a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    background-image: url('ChatGPT Image Nov 15, 2025, 10_09_53 PM.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+h1, h2, h3 {
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--light-color);
+    text-decoration: none;
+}
+
+section {
+    padding: 4rem 0;
+}
+
+/* --- Header --- */
+header {
+    background: var(--dark-color);
+    padding: 1rem 0;
+    border-bottom: 1px solid #222;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    color: var(--light-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+header .tagline {
+    color: var(--grey-text);
+    margin-bottom: 0;
+}
+
+/* --- Hero Section --- */
+.hero {
+    /* Image URL from the prompt */
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('http://googleusercontent.com/image_generation_content/0');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+    
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; /* Optional */
+
+}
+
+.hero-content h2 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--light-color);
+    text-transform: uppercase;
+}
+
+/* Red accent line from the image */
+.hero-title-wrapper {
+    border-top: 4px solid var(--primary-color);
+    display: inline-block;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    background: var(--primary-color);
+    color: var(--light-color);
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #E60000; /* Slightly lighter red on hover */
+}
+
+.cta-subtext {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    color: var(--grey-text);
+}
+
+/* --- Problem Section --- */
+.problem {
+    background: var(--dark-color);
+    text-align: center;
+}
+
+.problem blockquote {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--grey-text);
+    max-width: 800px;
+    margin: 0 auto;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 2rem;
+    text-align: left;
+}
+
+/* --- Solution Section --- */
+.solution {
+    background: var(--primary-color);
+    color: var(--light-color);
+}
+
+.solution h2 {
+    text-align: center;
+    color: var(--light-color);
+}
+
+.solution-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.solution-item {
+    text-align: center;
+    padding: 1rem;
+}
+
+/* Icon style from the image */
+.solution-item i {
+    font-size: 3rem;
+    background: var(--dark-color);
+    color: var(--light-color);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    margin-bottom: 1rem;
+}
+
+.solution-item h3 {
+    color: var(--light-color);
+    font-size: 1.5rem;
+}
+
+/* --- How It Works Section --- */
+.how-it-works {
+    background: var(--dark-grey);
+    text-align: center;
+}
+
+.how-it-works h2 {
+    margin-bottom: 3rem;
+}
+
+.flowchart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 150px;
+    text-align: center;
+}
+
+.flow-step i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.flow-step span {
+    font-size: 0.9rem;
+    color: var(--grey-text);
+}
+
+.flow-arrow {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin: 0 1rem;
+}
+
+/* --- Signup Section --- */
+.signup {
+    background: var(--primary-color);
+    text-align: center;
+}
+
+.signup h2 {
+    color: var(--light-color);
+}
+
+.signup p {
+    color: var(--light-color);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+#signup-form {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#signup-form input {
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: var(--light-color);
+    color: var(--dark-color);
+}
+
+#signup-form input::placeholder {
+    color: #555;
+}
+
+.submit-button {
+    background: var(--dark-color);
+    color: var(--light-color);
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+}
+
+.submit-button:hover {
+    background: #222;
+}
+
+.form-message {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* --- Footer --- */
+footer {
+    background: var(--dark-color);
+    border-top: 1px solid #222;
+    padding: 2rem 0;
+    text-align: center;
+    color: var(--grey-text);
+}
+
+footer .container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+footer .footer-nav a {
+    margin: 0 0.5rem;
+    color: var(--grey-text);
+}
+
+footer .footer-nav a:hover {
+    color: var(--primary-color);
+}
+
+/* --- Responsive (Mobile) --- */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 2rem;
+    }
+
+    header .container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero {
+        height: 70vh;
+    }
+
+    .hero-content h2 {
+        font-size: 2.2rem;
+    }
+
+    .solution-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .flowchart {
+        flex-direction: column;
+    }
+
+    .flow-arrow {
+        transform: rotate(90deg);
+        margin: 1rem 0;
+    }
+}

@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emergency Safety & Alert System</title>
+
+  <style>
+    /* Base styling */
+    
+    body {
+
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;                /* Full height */
+  display: flex;               /* Enables flexbox */
+  justify-content: center;     /* Horizontal center */
+  align-items: center;         /* Vertical center */
+  overflow-x: hidden;
+
+}
+
+   
+         
+
+#app {
+  background: #121212;
+  max-width: 600px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 88px #ff0000;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+  max-height: 90vh;            /* Prevent vertical overflow */
+  overflow-y: auto;            /* Scroll inside box if needed */
+}
+
+    h1 {
+      color: #ff1a1a;
+      margin-bottom: 10px;
+    }
+    p {
+      margin-top: 0;
+      font-size: 1.05em;
+      color: #ccc;
+    }
+
+    /* Navigation styles */
+    nav {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    nav button {
+      cursor: pointer;
+      border: 2px solid #ff1a1a;
+      background: #000;
+      color: #ff1a1a;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      flex-grow: 1;
+      transition: all 0.25s ease;
+      min-width: 100px;
+      font-size: 1rem;
+      user-select: none;
+      position: relative;
+      z-index: 11;
+    }
+    nav button:hover,
+    nav button.active {
+      background: #ff1a1a;
+      color: #000;
+      box-shadow: 0 0 10px #ff1a1aaa;
+    }
+
+    /* Screen styling */
+    .screen {
+      display: none;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    .screen.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    /* SOS Button */
+    #sosButton {
+      background: #ff0000;
+      color: #000;
+      font-size: 2rem;
+      font-weight: 900;
+      width: 100%;
+      padding: 25px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff0000;
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+      user-select: none;
+      animation: pulseGlow 2s ease-in-out infinite;
+      position: relative;
+      z-index: 11;
+    }
+    #sosButton:hover {
+      box-shadow: 0 0 30px #ff4d4d;
+      transform: scale(1.05);
+    }
+    #sosButton:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 15px #ff0000;
+    }
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 15px #ff0000;
+      }
+      50% {
+        box-shadow: 0 0 40px #ff3300;
+      }
+    }
+
+    #sosStatus {
+      margin-top: 15px;
+      font-weight: 600;
+      font-size: 1rem;
+      min-height: 1.2em;
+      color: #ff4d4d;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Spinner next to status */
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #ff0000;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% {transform: rotate(0deg);}
+      100% {transform: rotate(360deg);}
+    }
+
+    /* Progress bar for location fetch */
+    #progressBar {
+      width: 100%;
+      height: 6px;
+      background: #330000;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+      display: none;
+    }
+    #progressBar > div {
+      height: 100%;
+      width: 0;
+      background: #ff0000;
+      transition: width 2s ease;
+    }
+
+    /* Form styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1rem;
+      user-select: none;
+    }
+    input[type="text"],
+    input[type="tel"] {
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #ff1a1a;
+      background: #111;
+      color: #fff;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="tel"]:focus {
+      border-color: #ff4d4d;
+      outline: none;
+      box-shadow: 0 0 10px #ff4d4daa;
+    }
+    button[type=submit] {
+      background: #ff1a1a;
+      border: none;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: 10px;
+      color: #000;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+    button[type=submit]:hover {
+      background: #ff4d4d;
+      transform: scale(1.05);
+    }
+    button[type=submit]:active {
+      transform: scale(0.95);
+    }
+
+    /* Lists styling */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 0;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    li {
+      background: #1a1a1a;
+      border-left: 6px solid #ff1a1a;
+      margin-bottom: 10px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: default;
+      user-select: none;
+      box-shadow: 0 0 5px #ff1a1a44;
+      transition: background 0.3s ease;
+    }
+    li:hover {
+      background: #330000;
+    }
+
+    li button.removeBtn {
+      background: none;
+      border: none;
+      color: #ff6666;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    li button.removeBtn:hover {
+      color: #ff0000;
+    }
+
+    /* Modal overlay */
+    #modal {
+      position: fixed;
+      display: none;
+      background: rgba(0, 0, 0, 0.85);
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1001;
+      justify-content: center;
+      align-items: center;
+    }
+    #modal.active {
+      display: flex;
+    }
+    #modalContent {
+      background: #222;
+      border: 2px solid #ff1a1a;
+      border-radius: 12px;
+      padding: 30px 25px;
+      max-width: 350px;
+      text-align: center;
+      box-shadow: 0 0 15px #ff1a1acc;
+    }
+    #modalContent h2 {
+      margin-top: 0;
+      color: #ff1a1a;
+      margin-bottom: 15px;
+    }
+    #modalContent p {
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+    #modalContent button {
+      cursor: pointer;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      margin: 0 10px;
+      user-select: none;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    #modalConfirm {
+      background: #ff1a1a;
+      color: #000;
+    }
+    #modalConfirm:hover {
+      background: #ff4d4d;
+      transform: scale(1.05);
+    }
+    #modalCancel {
+      background: #444;
+      color: #fff;
+    }
+    #modalCancel:hover {
+      background: #666;
+      transform: scale(1.05);
+    }
+
+    /* FALLING DOTS Container */
+    #fallingDotsContainer {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      background: transparent;
+    }
+    .fallingDot {
+      position: absolute;
+      top: -10px;
+      width: 8px;
+      height: 8px;
+      background: #ff0000cc;
+      border-radius: 50%;
+      animation-name: fallDown, fadeOut;
+      animation-timing-function: linear, ease-in;
+      animation-iteration-count: infinite, 1;
+      animation-fill-mode: forwards;
+    }
+    @keyframes fallDown {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(110vh); }
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1;}
+      100% { opacity: 0;}
+    }
+  </style>
+</head>
+ 
+<body>
+ 
+  <div id="fallingDotsContainer"></div>
+
+  <div id="app" role="main" aria-label="Emergency Safety & Alert System" style="position: relative; z-index: 10;">
+
+    <h1>Emergency Safety & Alert System</h1>
+    <p>Quickly send SOS alerts with your location and notify your emergency contacts on campus.</p>
+
+
+    <nav aria-label="Primary Navigation">
+      <button id="btnHome" onclick="showScreen('home')" aria-controls="home" aria-selected="true" role="tab" title="Home" class="active">Home</button>
+      <button id="btnSOS" onclick="showScreen('sos')" aria-controls="sos" aria-selected="false" role="tab" title="Send SOS Emergency Alert">SOS</button>
+      <button id="btnAlerts" onclick="showScreen('alerts')" aria-controls="alerts" aria-selected="false" role="tab" title="View Alerts">Alerts</button>
+      <button id="btnSettings" onclick="showScreen('settings')" aria-controls="settings" aria-selected="false" role="tab" title="Manage Emergency Contacts">Settings</button>
+    </nav>
+
+    <section id="home" class="screen active" role="tabpanel" tabindex="0">
+      <h2>Welcome</h2>
+      <p>This app helps you quickly reach authorities during emergencies and broadcast alerts to your emergency contacts.</p>
+    </section>
+
+    <section id="sos" class="screen" role="tabpanel" tabindex="0" aria-hidden="true">
+      <h2>Emergency SOS</h2>
+      <button id="sosButton" aria-label="Press to send SOS emergency alert" onclick="confirmSOS()">🚨 SEND SOS 🚨</button>
+      <p id="sosStatus" aria-live="polite"></p>
+      <div id="progressBar"><div></div></div>
+    </section>
+
+    <section id="alerts" class="screen" role="tabpanel" tabindex="0" aria-hidden="true">
+      <h2>Recent Alerts</h2>
+      <ul id="alertList" aria-label="List of recent emergency alerts"></ul>
+    </section>
+
+    <section id="settings" class="screen" role="tabpanel" tabindex="0" aria-hidden="true">
+      <h2>Emergency Contacts</h2>
+      <form id="contactForm" aria-label="Add emergency contact">
+        <label for="contactName">Name</label>
+        <input id="contactName" type="text" required placeholder="Contact Name" autocomplete="off" />
+        <label for="contactPhone">Phone Number</label>
+        <input id="contactPhone" type="tel" required placeholder="e.g. +1234567890" autocomplete="off" />
+        <button type="submit" aria-label="Add Contact">Add Contact</button>
+      </form>
+      <ul id="contactList" aria-label="List of emergency contacts"></ul>
+    </section>
+
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+    <div id="modalContent">
+      <h2 id="modalTitle">Confirm SOS Alert</h2>
+      <p>Are you sure you want to send an emergency alert to your contacts immediately?</p>
+      <button id="modalConfirm" onclick="triggerSOS()">Yes, Send</button>
+      <button id="modalCancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    // Screen management
+    function showScreen(screenId) {
+      const screens = document.querySelectorAll('.screen');
+      const navButtons = document.querySelectorAll('nav button');
+
+      screens.forEach(screen => {
+        if (screen.id === screenId) {
+          screen.classList.add('active');
+          screen.setAttribute('aria-hidden', 'false');
+          screen.focus();
+        } else {
+          screen.classList.remove('active');
+          screen.setAttribute('aria-hidden', 'true');
+        }
+      });
+      navButtons.forEach(button => {
+        button.classList.toggle('active', button.getAttribute('aria-controls') === screenId);
+        button.setAttribute('aria-selected', button.getAttribute('aria-controls') === screenId ? 'true' : 'false');
+      });
+    }
+
+    // Modal controls
+    function confirmSOS() {
+      document.getElementById('modal').classList.add('active');
+      document.getElementById('modalConfirm').focus();
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+      document.getElementById('sosButton').focus();
+    }
+
+    // Play beep sound
+    function playBeep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = 800;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.5);
+      } catch (e) {
+        console.warn('Audio beep failed', e);
+      }
+    }
+
+    // Show messages in SOS status
+    function showMessage(type, text) {
+      const status = document.getElementById('sosStatus');
+      status.textContent = text;
+      status.style.color = type === 'error' ? '#ff7373' : '#7fff7f';
+    }
+
+    // Load alerts from localStorage
+    function loadAlerts() {
+      const alerts = JSON.parse(localStorage.getItem('alerts') || '[]');
+      const alertList = document.getElementById('alertList');
+      alertList.innerHTML = '';
+      alerts.slice().reverse().forEach(alert => {
+        const li = document.createElement('li');
+        li.textContent = `${alert.message} (${new Date(alert.timestamp).toLocaleString()})`;
+        alertList.appendChild(li);
+      });
+    }
+
+    // Add alert
+    function addAlert(message) {
+      const alerts = JSON.parse(localStorage.getItem('alerts') || '[]');
+      alerts.push({ message, timestamp: Date.now() });
+      localStorage.setItem('alerts', JSON.stringify(alerts));
+      loadAlerts();
+    }
+
+    // Load contacts from localStorage
+    function loadContacts() {
+      const contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+      const contactList = document.getElementById('contactList');
+      contactList.innerHTML = '';
+      contacts.forEach((contact, idx) => {
+        const li = document.createElement('li');
+        li.textContent = `${contact.name} (📞 ${contact.phone})`;
+        const btn = document.createElement('button');
+        btn.textContent = '✖';
+        btn.classList.add('removeBtn');
+        btn.title = `Remove ${contact.name}`;
+        btn.onclick = () => {
+          contacts.splice(idx, 1);
+          localStorage.setItem('contacts', JSON.stringify(contacts));
+          loadContacts();
+        };
+        li.appendChild(btn);
+        contactList.appendChild(li);
+      });
+    }
+
+    // Add contact event
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const nameInput = document.getElementById('contactName');
+      const phoneInput = document.getElementById('contactPhone');
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+      if (!name || !phone) {
+        alert("Name and phone number are required.");
+        return;
+      }
+      const contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+      contacts.push({ name, phone });
+      localStorage.setItem('contacts', JSON.stringify(contacts));
+      loadContacts();
+      nameInput.value = '';
+      phoneInput.value = '';
+      alert("Contact added successfully!");
+    });
+
+    // Trigger SOS alert
+    function triggerSOS() {
+      closeModal();
+      playBeep();
+      const progressBar = document.getElementById('progressBar');
+      const progressFill = progressBar.querySelector('div');
+      const status = document.getElementById('sosStatus');
+      status.innerHTML = `Fetching location... <div class='spinner'></div>`;
+      progressBar.style.display = 'block';
+      progressFill.style.width = "0%";
+
+      if (!navigator.geolocation) {
+        showMessage('error', 'Geolocation not supported by this browser.');
+        progressBar.style.display = 'none';
+        return;
+      }
+
+      progressFill.style.width = "80%";
+
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          progressFill.style.width = "100%";
+          setTimeout(() => {
+            progressBar.style.display = 'none';
+            const { latitude: lat, longitude: lon } = pos.coords;
+            const message = `SOS Alert! Current location: https://maps.google.com/?q=${lat},${lon}`;
+            showMessage('success', 'SOS Alert Sent!');
+            addAlert(message);
+            status.textContent = 'SOS alert sent with current location.';
+            if (Notification.permission === 'granted') {
+              new Notification("Emergency Alert Sent!", { body: "Help is on the way." });
+            }
+          }, 500);
+        },
+        err => {
+          progressBar.style.display = 'none';
+          showMessage('error', 'Error fetching location. Allow location access.');
+          status.textContent = '';
+        }, { timeout: 10000 }
+      );
+    }
+
+    // Falling red dots animation
+    function createFallingDot() {
+      const container = document.getElementById('fallingDotsContainer');
+      const dot = document.createElement('div');
+      dot.classList.add('fallingDot');
+
+      // Random horizontal position across viewport width
+      dot.style.left = `${Math.random() * 100}vw`;
+
+      // Random size from 4px to 10px
+      const size = 4 + Math.random() * 6;
+      dot.style.width = `${size}px`;
+      dot.style.height = `${size}px`;
+
+      // Random animation duration between 4 and 8 seconds
+      const duration = 4 + Math.random() * 4;
+      dot.style.animationDuration = `${duration}s, 1.5s`;
+      dot.style.animationDelay = `0s, ${duration - 1.5}s`;
+
+      container.appendChild(dot);
+
+      // Remove dot after animation duration
+      setTimeout(() => {
+        container.removeChild(dot);
+      }, duration * 1000);
+    }
+
+    function startFallingDots() {
+      // Create a new dot every 300ms
+      setInterval(createFallingDot, 300);
+    }
+
+    window.onload = () => {
+      loadContacts();
+      loadAlerts();
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(() => {}, () => alert('Please enable location access for SOS feature.'));
+      }
+      if ('Notification' in window) {
+        Notification.requestPermission();
+      }
+      startFallingDots();
+    };
+  </script>
+
+  <!-- Container for falling red dots -->
+  <div id="fallingDotsContainer" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;overflow:hidden;"></div>
+
+</body>
+</html>
